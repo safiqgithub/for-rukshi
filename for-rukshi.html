@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Rukshi 💜</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d0d1a;
+      color: #f0eaff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Stars */
+    #stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--d) ease-in-out infinite alternate;
+      opacity: var(--o);
+    }
+
+    @keyframes twinkle {
+      from { opacity: var(--o); transform: scale(1); }
+      to   { opacity: calc(var(--o) * 0.25); transform: scale(0.5); }
+    }
+
+    /* Train shimmer at bottom */
+    .train-line {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #7c5cbf 30%, #a78bfa 50%, #7c5cbf 70%, transparent 100%);
+      background-size: 200% 100%;
+      animation: trainGlow 3s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes trainGlow {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+
+    /* Page layout */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 72px 20px 100px;
+    }
+
+    /* Fade-up animation helper */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 56px;
+      max-width: 640px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      border: 1px solid rgba(167,139,250,0.35);
+      padding: 5px 18px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 10vw, 76px);
+      font-weight: 400;
+      line-height: 1.12;
+      color: #f5f0ff;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: #c4b5fd;
+    }
+
+    .hero .sub {
+      font-size: 15px;
+      color: #7e7a9a;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* Divider */
+    .divider {
+      width: 1px;
+      height: 64px;
+      background: linear-gradient(to bottom, transparent, rgba(167,139,250,0.55), transparent);
+      margin: 0 auto 56px;
+    }
+
+    /* Cards */
+    .section {
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(167,139,250,0.18);
+      border-radius: 20px;
+      padding: 40px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 500px) {
+      .card { padding: 28px 22px; }
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(167,139,250,0.7), transparent);
+    }
+
+    .card-icon {
+      font-size: 30px;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: #e9e3ff;
+      margin-bottom: 16px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #a09ac0;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+
+    .card p + p { margin-top: 14px; }
+
+    /* Train card variant */
+    .train-card {
+      border-color: rgba(196,181,253,0.22);
+      background: rgba(167,139,250,0.055);
+    }
+
+    .train-card h2 { color: #c4b5fd; }
+
+    /* Memory pills */
+    .memory-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 0 6px;
+      scrollbar-width: none;
+      margin-top: 22px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .memory-strip::-webkit-scrollbar { display: none; }
+
+    .mem-pill {
+      flex-shrink: 0;
+      background: rgba(167,139,250,0.12);
+      border: 1px solid rgba(167,139,250,0.28);
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-size: 13px;
+      color: #c4b5fd;
+      white-space: nowrap;
+    }
+
+    /* Sorry big section */
+    .sorry-big {
+      text-align: center;
+      padding: 52px 44px;
+    }
+
+    @media (max-width: 500px) {
+      .sorry-big { padding: 36px 22px; }
+    }
+
+    .sorry-big .word {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(56px, 14vw, 100px);
+      font-weight: 400;
+      font-style: italic;
+      color: #e9e3ff;
+      display: block;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    .sorry-big p {
+      font-size: 15px;
+      color: #a09ac0;
+      font-weight: 300;
+      line-height: 1.9;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Hearts */
+    .hearts {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .heart {
+      width: 14px; height: 14px;
+      background: #a78bfa;
+      transform: rotate(45deg);
+      position: relative;
+      animation: heartbeat 2s ease-in-out infinite;
+      border-radius: 2px;
+    }
+    .heart:nth-child(2) { animation-delay: 0.35s; background: #c4b5fd; }
+    .heart:nth-child(3) { animation-delay: 0.7s;  background: #7c5cbf; }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before { left: -7px; top: 0; }
+    .heart::after  { top: -7px; left: 0; }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: rotate(45deg) scale(1); }
+      50%       { transform: rotate(45deg) scale(1.3); }
+    }
+
+    /* Miss you section */
+    .miss-you {
+      text-align: center;
+      padding: 52px 44px;
+    }
+
+    @media (max-width: 500px) {
+      .miss-you { padding: 36px 22px; }
+    }
+
+    .miss-you h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: #e9e3ff;
+      margin-bottom: 18px;
+      line-height: 1.35;
+    }
+
+    .miss-you p {
+      font-size: 15px;
+      color: #a09ac0;
+      font-weight: 300;
+      line-height: 1.9;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .miss-you p + p { margin-top: 14px; }
+
+    /* Closing */
+    .closing {
+      text-align: center;
+      margin-top: 28px;
+      padding-bottom: 40px;
+    }
+
+    .closing .from {
+      font-size: 13px;
+      color: #4e4e6a;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .closing .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-style: italic;
+      color: #c4b5fd;
+    }
+
+    .closing .note {
+      font-size: 13px;
+      color: #3e3e58;
+      margin-top: 14px;
+      font-weight: 300;
+    }
+
+    /* Floating glow orbs for atmosphere */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 360px; height: 360px;
+      background: rgba(124,92,191,0.12);
+      top: -80px; right: -80px;
+    }
+
+    .orb-2 {
+      width: 280px; height: 280px;
+      background: rgba(167,139,250,0.08);
+      bottom: 100px; left: -60px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="stars"></div>
+  <div class="train-line"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="page">
+
+    <!-- Hero -->
+    <div class="hero reveal">
+      <span class="tag">a letter for you</span>
+      <h1>For my <em>Rukshi</em></h1>
+      <p class="sub">from someone who messed up and misses you terribly</p>
+    </div>
+
+    <div class="divider reveal"></div>
+
+    <!-- Train journey -->
+    <div class="section reveal">
+      <div class="card train-card">
+        <span class="card-icon">🚂</span>
+        <h2>That train journey...</h2>
+        <p>We were sitting there, side by side, watching the world blur past the window — and somehow I managed to make things go wrong between us. I still think about it. The things I said, the way I acted. It plays back in my head and every time, I wish I could undo it.</p>
+        <p>The truth is — it was my mistake. Fully, completely mine. And I hate that I let something I did come between us.</p>
+        <div class="memory-strip">
+          <span class="mem-pill">window seats</span>
+          <span class="mem-pill">the blur of trees</span>
+          <span class="mem-pill">our usual laugh</span>
+          <span class="mem-pill">that awkward silence</span>
+          <span class="mem-pill">i messed up</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- What I should have said -->
+    <div class="section reveal">
+      <div class="card">
+        <span class="card-icon">💜</span>
+        <h2>What I should have said then</h2>
+        <p>I was wrong. There's no way around it and I'm not going to pretend otherwise. I don't have a great excuse — I just didn't handle it the right way, and you deserved better than that from me.</p>
+        <p>You're one of the few people I can just be myself with. And I took that for granted in that moment. I regret it more than you know.</p>
+      </div>
+    </div>
+
+    <!-- Sorry -->
+    <div class="section reveal">
+      <div class="card sorry-big">
+        <span class="word">I'm sorry.</span>
+        <p>Not a quick 'sorry' to move on. A real one. The kind that means I've thought about it, I've felt bad about it, and I genuinely want to do better — because you matter to me that much.</p>
+        <div class="hearts">
+          <div class="heart"></div>
+          <div class="heart"></div>
+          <div class="heart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Miss you -->
+    <div class="section reveal">
+      <div class="card miss-you">
+        <h2>I miss you. Like, genuinely.</h2>
+        <p>I miss sending you random things just because they reminded me of you. I miss hearing you laugh. I miss talking to you about absolutely nothing for hours.</p>
+        <p>The kind of comfort that only a best friend gives — that's you. And life feels a little quieter without it. You're not just my bestie. You're one of the best parts of my days.</p>
+      </div>
+    </div>
+
+    <!-- Please come back -->
+    <div class="section reveal">
+      <div class="card">
+        <span class="card-icon">🌙</span>
+        <h2>Please come back</h2>
+        <p>I'm not asking you to forget what happened. I'm asking for a chance to make it right. To go back to being us — the version where we're laughing over silly things and being completely unserious together.</p>
+        <p>I'll do better. I promise. Just don't stay mad at me, Rukshi 🥺</p>
+      </div>
+    </div>
+
+    <!-- Closing -->
+    <div class="closing reveal">
+      <p class="from">with all my heart,</p>
+      <p class="name">your bestie 💜</p>
+      <p class="note">( the one who messed up on the train and regrets it every single day )</p>
+    </div>
+
+  </div>
+
+  <script>
+    // Stars
+    const container = document.getElementById('stars');
+    for (let i = 0; i < 110; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        top:${Math.random()*100}%;
+        left:${Math.random()*100}%;
+        --d:${(Math.random()*3+2).toFixed(1)}s;
+        --o:${(Math.random()*0.55+0.15).toFixed(2)};
+      `;
+      container.appendChild(s);
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Trigger hero on load
+    setTimeout(() => {
+      document.querySelector('.hero').classList.add('visible');
+      document.querySelector('.divider').classList.add('visible');
+    }, 100);
+  </script>
+
+</body>
+</html>
